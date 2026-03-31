@@ -22,6 +22,8 @@ test-docker/
 ├── README.md                     # Usage docs
 └── .dockerignore                 # Keeps the build context clean
 
+```
+
 ## Included libraries
 
 | Category | Libraries |
@@ -32,7 +34,7 @@ test-docker/
 | Viz | Matplotlib, Seaborn |
 | Jupyter | JupyterLab, ipywidgets |
 | Utilities | Pillow, tqdm, requests |
-```
+
 ---
 
 ## Quickstart
@@ -41,20 +43,20 @@ test-docker/
 
 ```bash
 # CPU
-docker pull ghcr.io/<your-github-username>/<repo-name>:cpu-latest
+docker pull ghcr.io/GevaHilzenrat/test_docker:cpu-latest
 
 # CUDA
-docker pull ghcr.io/<your-github-username>/<repo-name>:cuda-latest
+docker pull ghcr.io/GevaHilzenrat/test_docker:cuda-latest
 ```
 
 ### Run
 
 ```bash
 # CPU — opens JupyterLab on http://<host-ip>:8888
-docker run -p 8888:8888 -v $(pwd)/notebooks:/workspace ghcr.io/<your-github-username>/<repo-name>:cpu-latest
+docker run -p 8888:8888 -v $(pwd)/notebooks:/workspace ghcr.io/GevaHilzenrat/test_docker:cpu-latest
 
 # CUDA (requires nvidia-container-toolkit)
-docker run --gpus all -p 8888:8888 -v $(pwd)/notebooks:/workspace ghcr.io/<your-github-username>/<repo-name>:cuda-latest
+docker run --gpus all -p 8888:8888 -v $(pwd)/notebooks:/workspace ghcr.io/GevaHilzenrat/test_docker:cuda-latest
 ```
 
 > No token or password is required. Any user on your network can open `http://<host-ip>:8888` in a browser.
@@ -75,24 +77,10 @@ docker compose --profile gpu up
 
 ```bash
 # CPU
-docker build -f Dockerfile.cpu -t ml-jupyter:cpu .
+docker build -f docker/Dockerfile.cpu -t ml-jupyter:cpu .
 
 # CUDA
-docker build -f Dockerfile.cuda -t ml-jupyter:cuda .
-```
-
----
-
-## Repo structure
-
-```
-.
-├── Dockerfile.cpu          # CPU-only image (python:3.12-slim base)
-├── Dockerfile.cuda         # CUDA 12.4 image (nvidia/cuda base)
-├── docker-compose.yml      # Convenience compose file
-└── .github/
-    └── workflows/
-        └── docker-build.yml  # CI: builds & pushes to GHCR on push to main
+docker build -f docker/Dockerfile.cuda -t ml-jupyter:cuda .
 ```
 
 ---
@@ -107,8 +95,8 @@ JupyterLab is configured without authentication (`token` and `password` are both
 
 On every push to `main`, two images are built and pushed to the GitHub Container Registry automatically:
 
-- `ghcr.io/<owner>/<repo>:cpu-latest`
-- `ghcr.io/<owner>/<repo>:cuda-latest`
+- `ghcr.io/GevaHilzenrat/test_docker:cpu-latest`
+- `ghcr.io/GevaHilzenrat/test_docker:cuda-latest`
 
 No secrets need to be configured — the workflow uses the built-in `GITHUB_TOKEN`.
 
