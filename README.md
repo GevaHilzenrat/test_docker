@@ -3,6 +3,7 @@
 A ready-to-use JupyterLab environment with a full ML/data science stack, available in CPU and CUDA flavours.
 
 ## Structure
+```
 test-docker/
 │
 ├── .github/
@@ -31,7 +32,7 @@ test-docker/
 | Viz | Matplotlib, Seaborn |
 | Jupyter | JupyterLab, ipywidgets |
 | Utilities | Pillow, tqdm, requests |
-
+```
 ---
 
 ## Quickstart
