@@ -1,0 +1,114 @@
+# ML Jupyter Docker Image
+
+A ready-to-use JupyterLab environment with a full ML/data science stack, available in CPU and CUDA flavours.
+
+## Structure
+test-docker/
+│
+├── .github/
+│   └── workflows/
+│       └── docker-build.yml      # CI: build & push to GHCR
+│
+├── docker/
+│   ├── Dockerfile.cpu            # CPU image
+│   └── Dockerfile.cuda           # CUDA image
+│
+├── notebooks/                    # Your actual Jupyter notebooks
+│   └── examples/
+│       └── hello_world.ipynb
+│
+├── docker-compose.yml            # For running locally
+├── README.md                     # Usage docs
+└── .dockerignore                 # Keeps the build context clean
+
+## Included libraries
+
+| Category | Libraries |
+|---|---|
+| Data | NumPy, Pandas, SciPy |
+| ML | Scikit-learn, PyTorch, TorchVision, TorchAudio |
+| NLP | HuggingFace Transformers, Datasets, Accelerate |
+| Viz | Matplotlib, Seaborn |
+| Jupyter | JupyterLab, ipywidgets |
+| Utilities | Pillow, tqdm, requests |
+
+---
+
+## Quickstart
+
+### Pull from GitHub Container Registry
+
+```bash
+# CPU
+docker pull ghcr.io/<your-github-username>/<repo-name>:cpu-latest
+
+# CUDA
+docker pull ghcr.io/<your-github-username>/<repo-name>:cuda-latest
+```
+
+### Run
+
+```bash
+# CPU — opens JupyterLab on http://<host-ip>:8888
+docker run -p 8888:8888 -v $(pwd)/notebooks:/workspace ghcr.io/<your-github-username>/<repo-name>:cpu-latest
+
+# CUDA (requires nvidia-container-toolkit)
+docker run --gpus all -p 8888:8888 -v $(pwd)/notebooks:/workspace ghcr.io/<your-github-username>/<repo-name>:cuda-latest
+```
+
+> No token or password is required. Any user on your network can open `http://<host-ip>:8888` in a browser.
+
+### With docker compose
+
+```bash
+# CPU
+docker compose --profile cpu up
+
+# GPU
+docker compose --profile gpu up
+```
+
+---
+
+## Build locally
+
+```bash
+# CPU
+docker build -f Dockerfile.cpu -t ml-jupyter:cpu .
+
+# CUDA
+docker build -f Dockerfile.cuda -t ml-jupyter:cuda .
+```
+
+---
+
+## Repo structure
+
+```
+.
+├── Dockerfile.cpu          # CPU-only image (python:3.12-slim base)
+├── Dockerfile.cuda         # CUDA 12.4 image (nvidia/cuda base)
+├── docker-compose.yml      # Convenience compose file
+└── .github/
+    └── workflows/
+        └── docker-build.yml  # CI: builds & pushes to GHCR on push to main
+```
+
+---
+
+## Security note
+
+JupyterLab is configured without authentication (`token` and `password` are both empty) to make network sharing easy. **Do not expose port 8888 to the public internet** — use this only on trusted local or private cloud networks.
+
+---
+
+## GitHub Actions
+
+On every push to `main`, two images are built and pushed to the GitHub Container Registry automatically:
+
+- `ghcr.io/<owner>/<repo>:cpu-latest`
+- `ghcr.io/<owner>/<repo>:cuda-latest`
+
+No secrets need to be configured — the workflow uses the built-in `GITHUB_TOKEN`.
+
+To enable the package registry for your repo, go to **Settings → Actions → General → Workflow permissions** and set it to **Read and write permissions**.

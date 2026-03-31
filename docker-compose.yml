@@ -1,0 +1,29 @@
+services:
+  jupyter-cpu:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.cpu
+    image: ml-jupyter:cpu
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/workspace
+    profiles: ["cpu"]
+
+  jupyter-gpu:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.cuda
+    image: ml-jupyter:cuda
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/workspace
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    profiles: ["gpu"]
