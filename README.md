@@ -14,9 +14,7 @@ test-docker/
 │   ├── Dockerfile.cpu            # CPU image
 │   └── Dockerfile.cuda           # CUDA image
 │
-├── notebooks/                    # Your actual Jupyter notebooks
-│   └── examples/
-│       └── hello_world.ipynb
+├── notebooks/
 │
 ├── src/
 │   ├── minimal_cpu.py
