@@ -18,6 +18,10 @@ test-docker/
 │   └── examples/
 │       └── hello_world.ipynb
 │
+├── src/
+│   ├── minimal_cpu.py
+│   └── minimal_torch.py
+│
 ├── docker-compose.yml            # For running locally
 ├── README.md                     # Usage docs
 └── .dockerignore                 # Keeps the build context clean
