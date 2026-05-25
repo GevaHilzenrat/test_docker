@@ -24,6 +24,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/pytorch-codeserver:latest
-        env:
-          REPO_OWNER: ${{ github.repository_owner }}
+          tags: ghcr.io/gevahilzenrat/pytorch-codeserver:latest
